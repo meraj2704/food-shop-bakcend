@@ -2,6 +2,10 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import connectDB from './db';
 import cors from 'cors';
 import { userRouter } from './app/modules/users/user.routes';
+import { categoryRouter } from './app/modules/category/category.routes';
+import { foodRouter } from './app/modules/foods/food.routes';
+import { authRouter } from './app/modules/auth.ts/auth.routes';
+import { orderRouter } from './app/modules/orders/order.routes';
 
 
 const app: Application = express();
@@ -22,7 +26,11 @@ app.get('/', (req:Request, res:Response) => {
     res.json({ message: 'Hello World' });
 })
 
-app.use('/user', userRouter);
+app.use('/api/auth', authRouter);
+app.use('/api', userRouter);
+app.use('/api', categoryRouter);
+app.use('/api', foodRouter );
+app.use('/api', orderRouter);
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

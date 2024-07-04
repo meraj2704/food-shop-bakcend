@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface User {
     email:string;
@@ -9,6 +9,6 @@ export interface User {
     address:String;
 }
 
-export type UserRole = 'user' | 'admin' | 'superAdmin';
+export type UserRole = 'User' | 'Admin' | 'Super Admin';
 
 export interface UserDocument extends User, Document {}

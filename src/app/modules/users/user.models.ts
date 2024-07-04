@@ -7,7 +7,7 @@ const UserSchema = new Schema<UserDocument>({
     name : {type:String, required:true},
     phone : {type:String, required:true},
     address : {type:String},
-    userRole: {type:String, required:true, enum:['user','admin','superAdmin'], default:'user'}
+    userRole: {type:String, required:true, enum:['User','Admin','Super Admin'], default:'User'}
 })
 
 export default model<UserDocument>('User', UserSchema)
