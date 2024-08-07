@@ -1,13 +1,14 @@
 import { Router } from "express";
-import { createFood, deleteFood, getAllFood, getFoodByCategory, getSingleFood, updateFood } from "./food.controller";
+import { FoodController } from "./food.controller";
+import upload from "../../config/multer.config";
 
 const router = Router();
 
-router.post('/food', createFood);
-router.get('/food', getAllFood);
-router.get('/food/:id', getSingleFood);
-router.get('/food/category/:id', getFoodByCategory)
-router.delete('/food/:id', deleteFood);
-router.put('/food/:id', updateFood);
+router.post("/food", upload.single("file"), FoodController.createFood);
+router.get("/food", FoodController.getAllFood);
+router.get("/food/:id", FoodController.getSingleFood);
+router.get("/food/category/:id", FoodController.getFoodByCategory);
+router.delete("/food/:id", FoodController.deleteFood);
+router.put("/food/:id", upload.single("images"), FoodController.updateFood);
 
 export const foodRouter = router;

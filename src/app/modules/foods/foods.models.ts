@@ -6,6 +6,8 @@ const foodSchema = new Schema<IFoods>({
   price: { type: Number, required: true },
   categoryId: { type: Schema.Types.ObjectId, required: true },
   description: { type: String },
+  imagePath:{type:String},
+  imageFileName:{type:String},
 });
 
 // export const Food = model('Food',foodSchema)

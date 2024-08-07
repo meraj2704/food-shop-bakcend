@@ -6,6 +6,8 @@ import { categoryRouter } from './app/modules/category/category.routes';
 import { foodRouter } from './app/modules/foods/food.routes';
 import { authRouter } from './app/modules/auth.ts/auth.routes';
 import { orderRouter } from './app/modules/orders/order.routes';
+import { uploadRouter } from './app/modules/multer/upload.routes';
+import logRoutes from './app/middlewares/logRoutes';
 
 
 const app: Application = express();
@@ -31,7 +33,9 @@ app.use('/api', userRouter);
 app.use('/api', categoryRouter);
 app.use('/api', foodRouter );
 app.use('/api', orderRouter);
+app.use('/images', uploadRouter)
 
+logRoutes(app)
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
