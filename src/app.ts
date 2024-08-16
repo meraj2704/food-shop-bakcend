@@ -8,6 +8,7 @@ import { authRouter } from './app/modules/auth.ts/auth.routes';
 import { orderRouter } from './app/modules/orders/order.routes';
 import { uploadRouter } from './app/modules/multer/upload.routes';
 import logRoutes from './app/middlewares/logRoutes';
+import errorHandler from './app/middlewares/global.error';
 
 
 const app: Application = express();
@@ -37,10 +38,7 @@ app.use('/images', uploadRouter)
 
 logRoutes(app)
 // Error handling middleware
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Internal Server Error' });
-});
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {

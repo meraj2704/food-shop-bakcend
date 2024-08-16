@@ -18,10 +18,10 @@ const foodCreateValidation = async (
   next: NextFunction
 ) => {
   try {
+    console.log("validation on : ", req.body);
     await foodSchema.validate(req.body, { abortEarly: false });
     next();
   } catch (error: any) {
-    // console.log(error.message)
     const errorMessages = error.inner.map(
       (err: yup.ValidationError) => err.message
     );
@@ -31,6 +31,7 @@ const foodCreateValidation = async (
     });
   }
 };
+
 
 export const FoodMiddleware = {
   foodCreateValidation,
