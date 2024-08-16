@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import Food from "./foods.models";
 import { IFoods } from "./food.interface";
 import Category from "../category/category.model";
-import { findCategory, findFood } from "./food.utils";
 import { FoodService } from "./food.service";
 import { sendResponse } from "../../utils/response";
 import { dataValidation } from "../../utils/dataValidation";
+import { findCategory, findFood } from "../../utils/findFunctions";
 
 //  ---------------------------------------------
 //  ------------------ Create Food --------------  done , remove redundancy
@@ -18,14 +18,14 @@ export const createFood = async (
   console.log("called");
   const { name, quantity, price, categoryId, unit, description } = req.body;
   try {
-    const requiredFields = ["name", "price", "categoryId", "quantity", "unit"];
-    const dataCheck = dataValidation(requiredFields, req.body);
-    if (dataCheck) {
-      return sendResponse(res, 400, {
-        success: false,
-        message: dataCheck,
-      });
-    }
+    // const requiredFields = ["name", "price", "categoryId", "quantity", "unit"];
+    // const dataCheck = dataValidation(requiredFields, req.body);
+    // if (dataCheck) {
+    //   return sendResponse(res, 400, {
+    //     success: false,
+    //     message: dataCheck,
+    //   });
+    // }
 
     const existFoodName = await findFood(name);
     if (existFoodName) {
@@ -165,6 +165,20 @@ export const updateFood = async (
       return sendResponse(res, 400, {
         success: false,
         message: "At least one field is required",
+      });
+    }
+    const existName = await findFood(name);
+    if(existName){
+      return sendResponse(res, 400, {
+        success: false,
+        message: "Food already exists with this name",
+      });
+    }
+    const existCategory = await findCategory(categoryId);
+    if(!existCategory){
+      return sendResponse(res, 400, {
+        success: false,
+        message: "Category not found",
       });
     }
     const imagePath = req.file ? req.file.path : undefined;

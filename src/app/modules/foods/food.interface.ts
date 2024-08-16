@@ -4,6 +4,8 @@ export interface IFoods extends Document{
     name:string;
     price:number;
     categoryId:Types.ObjectId;
+    quantity:number;
+    unit:string;
     description:string;
     imagePath?:string;
     imageFileName?:string;

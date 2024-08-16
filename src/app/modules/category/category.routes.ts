@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { authenticateToken } from "../../middlewares/auth";
-import { createCategory, getCategories,getSingleCategory,deleteCategory, updateCategory } from "./category.controller";
+import upload from "../../config/multer.config";
+import { CategoryController } from "./category.controller";
 
 const router = Router();
 
-router.post('/category', createCategory)
-router.get('/category', getCategories);
-router.get('/category/:id', getSingleCategory)
-router.delete('/category/:id', deleteCategory)
-router.put('/category/:id', updateCategory)
+router.post('/category',upload.single('file'), CategoryController.createCategory)
+router.get('/category', CategoryController.getCategories);
+router.get('/category/:id', CategoryController.getSingleCategory)
+router.delete('/category/:id', CategoryController.deleteCategory)
+router.put('/category/:id',upload.single('file'), CategoryController.updateCategory)
 
 export const categoryRouter = router;

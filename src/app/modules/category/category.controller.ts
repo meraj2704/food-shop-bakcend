@@ -1,25 +1,38 @@
 import { NextFunction, Request, Response } from "express";
 import { ICategory } from "./category.interface";
 import Category from "./category.model";
+import { dataValidation } from "../../utils/dataValidation";
+import { sendResponse } from "../../utils/response";
 
-export const createCategory = async (
+const createCategory = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { name } = req.body;
+  const { name,shortName } = req.body;
   try {
-    if (!name) {
-      return res.status(400).json({ message: "Name is required" });
+    const requireFields = ["name"];
+    const dataCheck = dataValidation(requireFields, req.body);
+    if (dataCheck) {
+      return sendResponse
+      (res, 400, {
+        success: false,
+        message: dataCheck,
+      });
     }
-
     const exitsCategory = await Category.findOne({ name });
     if (exitsCategory) {
-      console.log(exitsCategory);
-      return res.status(400).json({ message: "Category already exist" });
+      return sendResponse
+      (res, 400, {
+        success: false,
+        message: "Category already exists",
+      });
     }
 
-    const category: ICategory = new Category({ name });
+    const imagePath = req.file ? req.file.path : undefined;
+    const imageFileName = req.file? req.file.filename : undefined;
+    console.log("image file :", imageFileName)
+    const category: ICategory = new Category({ name,shortName,imagePath,imageFileName });
     await category.save();
     res
       .status(201)
@@ -30,7 +43,7 @@ export const createCategory = async (
   }
 };
 
-export const getCategories = async (
+const getCategories = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -62,7 +75,7 @@ export const getSingleCategory = async (
   }
 };
 
-export const deleteCategory = async (
+const deleteCategory = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -77,7 +90,7 @@ export const deleteCategory = async (
   }
 };
 
-export const updateCategory = async (
+const updateCategory = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -97,3 +110,11 @@ export const updateCategory = async (
     next(error);
   }
 };
+
+export const CategoryController = {
+  createCategory,
+  getCategories,
+  getSingleCategory,
+  deleteCategory,
+  updateCategory,
+}
