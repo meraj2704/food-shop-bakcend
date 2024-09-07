@@ -4,6 +4,7 @@ export interface IOrder extends Document{
     user:Types.ObjectId;
     items:{
         food:Types.ObjectId;
+        name:String;
         quantity:number;
     }[];
     totalAmount:number;

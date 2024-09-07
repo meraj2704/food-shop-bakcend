@@ -13,4 +13,5 @@ const foodSchema = new Schema<IFoods>({
 });
 
 // export const Food = model('Food',foodSchema)
-export default model<IFoods>("Foods", foodSchema);
+const Foods =  model<IFoods>("Foods", foodSchema);
+export default Foods;

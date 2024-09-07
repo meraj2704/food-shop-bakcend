@@ -3,6 +3,10 @@ import { UserDocument } from "../users/user.interface";
 import { IOrder } from "./order.interface";
 import Order from "./order.model";
 
+// ----------------------------------------
+// -------------- Create Orders -----------    pending
+// ----------------------------------------
+
 export const createOrder = async (
   req: Request,
   res: Response,
@@ -32,6 +36,10 @@ export const createOrder = async (
   }
 };
 
+// ----------------------------------------
+// ------------- Get All Orders -----------    pending
+// ----------------------------------------
+
 export const getAllOrders = async (
   req: Request,
   res: Response,
@@ -45,6 +53,10 @@ export const getAllOrders = async (
     next(error);
   }
 };
+
+// ----------------------------------------
+// ---------- Get Single Orders -----------    pending
+// ----------------------------------------
 
 export const getSingleOrder = async (
   req: Request,
@@ -65,6 +77,10 @@ export const getSingleOrder = async (
   }
 };
 
+// ----------------------------------------
+// ----------- Get Orders By ID -----------    pending
+// ----------------------------------------
+
 export const getOrderByUserId = async (
   req: Request,
   res: Response,
@@ -83,6 +99,10 @@ export const getOrderByUserId = async (
   }
 };
 
+// ----------------------------------------
+// -------- Update Order Status -----------    pending
+// ----------------------------------------
+
 export const updateOrderStatus = async (
   req: Request,
   res: Response,
@@ -100,7 +120,9 @@ export const updateOrderStatus = async (
     if (!order) {
       res.status(404).json({ message: "Order not found" });
     }
-    res.status(200).json({ message: "Order status updated successfully", order });
+    res
+      .status(200)
+      .json({ message: "Order status updated successfully", order });
   } catch (error) {
     console.log(error);
     next;

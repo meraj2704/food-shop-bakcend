@@ -5,11 +5,25 @@ import { FoodMiddleware } from "./food.middleware";
 
 const router = Router();
 
-router.post("/food",FoodMiddleware.foodCreateValidation, upload.single("file"), FoodController.createFood);
+router.post(
+  "/food",
+  upload.single("file"),
+  FoodMiddleware.foodCreateValidation,
+  FoodController.createFood
+);
 router.get("/food", FoodController.getAllFood);
 router.get("/food/:id", FoodController.getSingleFood);
-router.get("/food/category/:id", FoodController.getFoodByCategory);
+router.get(
+  "/food/category/:id",
+  FoodMiddleware.getFooByIdValidation,
+  FoodController.getFoodByCategory
+);
 router.delete("/food/:id", FoodController.deleteFood);
-router.put("/food/:id", upload.single("images"), FoodController.updateFood);
+router.put(
+  "/food/:id",
+  upload.single("images"),
+  FoodMiddleware.foodUpdateValidation,
+  FoodController.updateFood
+);
 
 export const foodRouter = router;

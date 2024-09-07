@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import Food from "./foods.models";
 import { IFoods } from "./food.interface";
-import Category from "../category/category.model";
 import { FoodService } from "./food.service";
 import { sendResponse } from "../../utils/response";
 import { dataValidation } from "../../utils/dataValidation";
 import { findCategory, findFood } from "../../utils/findFunctions";
+import Foods from "./foods.models";
 
 //  ---------------------------------------------
 //  ------------------ Create Food --------------  done , remove redundancy
@@ -18,14 +17,7 @@ export const createFood = async (
   console.log("called");
   const { name, quantity, price, categoryId, unit, description } = req.body;
   try {
-    // const requiredFields = ["name", "price", "categoryId", "quantity", "unit"];
-    // const dataCheck = dataValidation(requiredFields, req.body);
-    // if (dataCheck) {
-    //   return sendResponse(res, 400, {
-    //     success: false,
-    //     message: dataCheck,
-    //   });
-    // }
+
 
     const existFoodName = await findFood(name);
     if (existFoodName) {
@@ -161,29 +153,8 @@ export const updateFood = async (
   const { id } = req.params;
   const { name, price, categoryId, description } = req.body;
   try {
-    if (!name && !price && !categoryId && !description) {
-      return sendResponse(res, 400, {
-        success: false,
-        message: "At least one field is required",
-      });
-    }
-    const existName = await findFood(name);
-    if(existName){
-      return sendResponse(res, 400, {
-        success: false,
-        message: "Food already exists with this name",
-      });
-    }
-    const existCategory = await findCategory(categoryId);
-    if(!existCategory){
-      return sendResponse(res, 400, {
-        success: false,
-        message: "Category not found",
-      });
-    }
     const imagePath = req.file ? req.file.path : undefined;
     const imageFileName = req.file ? req.file.filename : undefined;
-
     const updateData = {
       name,
       price,
@@ -192,14 +163,7 @@ export const updateFood = async (
       imagePath,
       imageFileName,
     };
-
-    const food = await Food.findByIdAndUpdate(id, updateData, { new: true });
-    if (!food) {
-      return sendResponse(res, 404, {
-        success: false,
-        message: "Food not found",
-      });
-    }
+    const food = await Foods.findByIdAndUpdate(id, updateData, { new: true });
     return sendResponse(res, 200, {
       success: true,
       message: "Food updated successfully",
@@ -222,16 +186,9 @@ export const getFoodByCategory = async (
 ) => {
   const { id } = req.params;
   try {
-    const category = await Category.findById(id);
-    if (!category) {
-      return sendResponse(res, 404, {
-        success: false,
-        message: "Category not found",
-      });
-    }
-    const foods = await Food.find({ categoryId: id });
+    const foods = await Foods.find({ categoryId: id });
     if (!foods) {
-    return sendResponse(res, 404, {
+      return sendResponse(res, 404, {
         success: false,
         message: "Foods not found",
       });

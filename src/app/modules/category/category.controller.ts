@@ -1,47 +1,42 @@
 import { NextFunction, Request, Response } from "express";
 import { ICategory } from "./category.interface";
-import Category from "./category.model";
-import { dataValidation } from "../../utils/dataValidation";
 import { sendResponse } from "../../utils/response";
+import { findCategory } from "../../utils/findFunctions";
+import Category from "./category.model";
 
+// -----------------------------------------------
+// ---------- create category controller --------- done
+// -----------------------------------------------
 const createCategory = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { name,shortName } = req.body;
+  const { name, shortName } = req.body;
   try {
-    const requireFields = ["name"];
-    const dataCheck = dataValidation(requireFields, req.body);
-    if (dataCheck) {
-      return sendResponse
-      (res, 400, {
-        success: false,
-        message: dataCheck,
-      });
-    }
-    const exitsCategory = await Category.findOne({ name });
-    if (exitsCategory) {
-      return sendResponse
-      (res, 400, {
-        success: false,
-        message: "Category already exists",
-      });
-    }
-
     const imagePath = req.file ? req.file.path : undefined;
-    const imageFileName = req.file? req.file.filename : undefined;
-    console.log("image file :", imageFileName)
-    const category: ICategory = new Category({ name,shortName,imagePath,imageFileName });
+    const imageFileName = req.file ? req.file.filename : undefined;
+    const category: ICategory = new Category({
+      name,
+      shortName,
+      imagePath,
+      imageFileName,
+    });
     await category.save();
-    res
-      .status(201)
-      .json({ message: "Category created successfully", category: category });
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Category created successfully",
+      data: category,
+    });
   } catch (error) {
     console.log(error);
     next(error);
   }
 };
+
+// -----------------------------------------------
+// ------------ get category controller ---------- done
+// -----------------------------------------------
 
 const getCategories = async (
   req: Request,
@@ -50,12 +45,20 @@ const getCategories = async (
 ) => {
   try {
     const categories = await Category.find();
-    res.status(200).json(categories);
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Categories fetched successfully",
+      data: categories,
+    });
   } catch (error) {
     console.log(error);
     next(error);
   }
 };
+
+// -----------------------------------------------
+// ------- get single category controller -------- done
+// -----------------------------------------------
 
 export const getSingleCategory = async (
   req: Request,
@@ -64,16 +67,28 @@ export const getSingleCategory = async (
 ) => {
   const { id } = req.params;
   try {
-    const category = await Category.findById(id);
+    const category = await findCategory(id);
     if (!category) {
-      return res.status(404).json({ message: "Category not found" });
+      return sendResponse(res, 404, {
+        success: false,
+        message: "Category not found",
+        data: category,
+      });
     }
-    res.status(200).json(category);
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Category fetched successfully",
+      data: category,
+    });
   } catch (error) {
     console.log(error);
     next(error);
   }
 };
+
+// -----------------------------------------------
+// ---------- delete category controller --------- done
+// -----------------------------------------------
 
 const deleteCategory = async (
   req: Request,
@@ -83,12 +98,19 @@ const deleteCategory = async (
   const { id } = req.params;
   try {
     await Category.findByIdAndDelete(id);
-    res.status(200).json({ message: "Category deleted successfully" });
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Category deleted successfully",
+    });
   } catch (error) {
     console.log(error);
     next(error);
   }
 };
+
+// -----------------------------------------------
+// ---------- update category controller --------- done
+// -----------------------------------------------
 
 const updateCategory = async (
   req: Request,
@@ -98,13 +120,16 @@ const updateCategory = async (
   const { id } = req.params;
   const { name } = req.body;
   try {
-    const category = await Category.findByIdAndUpdate(id, {name:name}, {new:true});
-    if (!category) {
-      return res.status(404).json({ message: "Category not found" });
-    }
-    res
-      .status(200)
-      .json({ message: "Category updated successfully", category: category });
+    const category = await Category.findByIdAndUpdate(
+      id,
+      { name: name },
+      { new: true }
+    );
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Category updated successfully",
+      data: category,
+    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -117,4 +142,4 @@ export const CategoryController = {
   getSingleCategory,
   deleteCategory,
   updateCategory,
-}
+};
