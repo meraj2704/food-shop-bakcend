@@ -3,7 +3,7 @@ import { ICategory } from "./category.interface";
 
 const categorySchema = new Schema<ICategory>({
   name: { type: String, required: true, unique: true },
-  shortName: { type: String, unique: true },
+  shortNote: { type: String, unique: false},
   imagePath: { type: String },
   imageFileName: { type: String },
 });
