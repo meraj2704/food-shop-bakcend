@@ -3,9 +3,9 @@ import { ICategory } from "./category.interface";
 
 const categorySchema = new Schema<ICategory>({
   name: { type: String, required: true, unique: true },
-  shortNote: { type: String, unique: false},
-  imagePath: { type: String },
-  imageFileName: { type: String },
+  description: { type: String, unique: false},
+  image_url: { type: String },
+  image_file_name: { type: String },
 });
 
 // export const Category = model("Category", categorySchema);

@@ -4,9 +4,9 @@ import { sendResponse } from "../../utils/response";
 import * as yup from "yup";
 import { findCategoryByName, findCategory } from "../../utils/findFunctions";
 const categorySchema = yup.object().shape({
-  name: yup.string().required("name is required"),
-  imagePath: yup.string(),
-  imageFileName: yup.string(),
+  name: yup.string().required("Name is required"),
+  image_url: yup.string(),
+  image_file_name: yup.string(),
 });
 // -----------------------------------------------
 // -------- validation for create category ------- done

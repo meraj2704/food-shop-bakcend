@@ -12,15 +12,15 @@ const createCategory = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, shortNote } = req.body;
+  const { name, description } = req.body;
   try {
-    const imagePath = req.file ? req.file.path : undefined;
-    const imageFileName = req.file ? req.file.filename : undefined;
+    const image_url = req.file ? req.file.path : undefined;
+    const image_file_name = req.file ? req.file.filename : undefined;
     const category: ICategory = new Category({
       name,
-      shortNote,
-      imagePath,
-      imageFileName,
+      description,
+      image_url,
+      image_file_name
     });
     await category.save();
     return sendResponse(res, 200, {
