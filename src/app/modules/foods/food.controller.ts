@@ -15,10 +15,8 @@ export const createFood = async (
   next: NextFunction
 ) => {
   console.log("called");
-  const { name, quantity, price, categoryId, unit, description } = req.body;
+  const { name, quantity, price, category_id, unit, description } = req.body;
   try {
-
-
     const existFoodName = await findFood(name);
     if (existFoodName) {
       return sendResponse(res, 400, {
@@ -26,7 +24,7 @@ export const createFood = async (
         message: "Food already exists with this name",
       });
     }
-    const existCategory = await findCategory(categoryId);
+    const existCategory = await findCategory(category_id);
     if (!existCategory) {
       return sendResponse(res, 400, {
         success: false,
@@ -34,17 +32,18 @@ export const createFood = async (
       });
     }
 
-    const imagePath = req.file ? req.file.path : undefined;
-    const imageFileName = req.file ? req.file.filename : undefined;
+    const image_url = req.file ? req.file.path : undefined;
+    const image_path_name = req.file ? req.file.filename : undefined;
     const newFood = {
       name,
       quantity,
       price,
-      categoryId,
+      category_id,
+      category_name:existCategory.name,
       unit,
       description,
-      imagePath,
-      imageFileName,
+      image_url,
+     
     };
     const result = await FoodService.createFood(newFood);
     return sendResponse(res, 201, {
@@ -151,17 +150,17 @@ export const updateFood = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { name, price, categoryId, description } = req.body;
+  const { name, price, category_id, description } = req.body;
   try {
-    const imagePath = req.file ? req.file.path : undefined;
+    const image_url = req.file ? req.file.path : undefined;
     const imageFileName = req.file ? req.file.filename : undefined;
     const updateData = {
       name,
       price,
-      categoryId,
+      category_id,
       description,
-      imagePath,
-      imageFileName,
+      image_url,
+      
     };
     const food = await Foods.findByIdAndUpdate(id, updateData, { new: true });
     return sendResponse(res, 200, {

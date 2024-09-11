@@ -3,12 +3,11 @@ import { Document, Types } from "mongoose";
 export interface IFoods extends Document{
     name:string;
     price:number;
-    categoryId:Types.ObjectId;
+    category_id:Types.ObjectId;
     quantity:number;
     unit:string;
     description:string;
-    imagePath?:string;
-    imageFileName?:string;
+    image_url?:string;
 }
 
 export interface IFindFood {

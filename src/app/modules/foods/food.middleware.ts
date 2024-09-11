@@ -9,12 +9,12 @@ import {
 const foodSchema = yup.object().shape({
   name: yup.string().required("name is required"),
   price: yup.number().required("price is required"),
-  categoryId: yup.string().required("categoryId is required"),
+  category_id: yup.string().required("Category Id is required"),
   quantity: yup.number().required("quantity is required"),
   unit: yup.string().required("unit is required"),
   description: yup.string(),
-  imagePath: yup.string(),
-  imageFileName: yup.string(),
+  image_url: yup.string(),
+  image_path_name: yup.string(),
 });
 
 const foodCreateValidation = async (
@@ -43,7 +43,7 @@ const foodUpdateValidation = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { name, price, categoryId, description } = req.body;
+  const { name, price, category_id, description } = req.body;
   try {
     const foodById = await findFoodById(id);
     if (!foodById) {
@@ -52,7 +52,7 @@ const foodUpdateValidation = async (
         message: "Food not found",
       });
     }
-    if (!name && !price && !categoryId && !description) {
+    if (!name && !price && !category_id && !description) {
       return sendResponse(res, 400, {
         success: false,
         message: "At least one field is required",
@@ -65,7 +65,7 @@ const foodUpdateValidation = async (
         message: "Food already exists with this name",
       });
     }
-    const existCategory = await findCategory(categoryId);
+    const existCategory = await findCategory(category_id);
     if (!existCategory) {
       return sendResponse(res, 400, {
         success: false,
