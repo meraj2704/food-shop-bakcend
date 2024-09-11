@@ -11,13 +11,13 @@ cloudinaryV2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET, // Your Cloudinary API Secret
 });
 
-// Define upload directory
-const uploadDir = join(__dirname, 'uploads');
+// // Define upload directory
+// const uploadDir = join(__dirname, 'uploads');
 
-// Ensure the uploads directory exists
-if (!existsSync(uploadDir)) {
-  mkdirSync(uploadDir, { recursive: true }); // Added recursive option
-}
+// // Ensure the uploads directory exists
+// if (!existsSync(uploadDir)) {
+//   mkdirSync(uploadDir, { recursive: true }); // Added recursive option
+// }
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinaryV2,
