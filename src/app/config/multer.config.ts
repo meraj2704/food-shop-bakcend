@@ -13,16 +13,12 @@ cloudinaryV2.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinaryV2,
-  params: {
-    folder: 'uploads',  // Specify the Cloudinary folder
-    format: async (req: Request, file: Express.Multer.File) => {
-      const fileExtension = file.mimetype.split('/')[1];
-      return fileExtension === 'jpeg' ? 'jpg' : fileExtension; // Normalize extension if needed
-    },
-    public_id: (req: Request, file: Express.Multer.File) => {
-      const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      return uniqueName;
-    },
+  params: async (req: Request, file: Express.Multer.File) => {
+    return {
+      folder: 'uploads',  // Specify the folder in Cloudinary
+      format: file.mimetype.split('/')[1], // Use the file's original extension
+      public_id: `${Date.now()}-${Math.round(Math.random() * 1e9)}` // Generate a unique filename
+    };
   },
 });
 
