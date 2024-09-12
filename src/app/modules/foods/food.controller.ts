@@ -31,7 +31,7 @@ export const createFood = async (
         message: "Category not found",
       });
     }
-
+console.log(existCategory)
     const image_url = req.file ? req.file.path : undefined;
     const image_path_name = req.file ? req.file.filename : undefined;
     const newFood = {
@@ -43,8 +43,8 @@ export const createFood = async (
       unit,
       description,
       image_url,
-     
     };
+    console.log(newFood)
     const result = await FoodService.createFood(newFood);
     return sendResponse(res, 201, {
       success: true,

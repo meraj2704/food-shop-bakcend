@@ -5,6 +5,7 @@ const foodSchema = new Schema<IFoods>({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   category_id: { type: Schema.Types.ObjectId, required: true },
+  category_name: { type: String, required: true },
   quantity: { type: Number, required: true},
   unit:{type:String, required: true},
   description: { type: String },
