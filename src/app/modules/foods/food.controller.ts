@@ -185,7 +185,7 @@ export const getFoodByCategory = async (
 ) => {
   const { id } = req.params;
   try {
-    const foods = await Foods.find({ categoryId: id });
+    const foods = await Foods.find({ category_id: id });
     if (!foods) {
       return sendResponse(res, 404, {
         success: false,
