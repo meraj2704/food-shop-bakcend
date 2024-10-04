@@ -44,16 +44,7 @@ const updateCategoryValidation = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { name } = req.body;
   try {
-    const requireFields = ["name"];
-    const dataCheck = dataValidation(requireFields, req.body);
-    if (dataCheck) {
-      return sendResponse(res, 400, {
-        success: false,
-        message: dataCheck,
-      });
-    }
     const exitsCategory = await findCategory(id);
     if (!exitsCategory) {
       return sendResponse(res, 404, {

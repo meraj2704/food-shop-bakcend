@@ -118,11 +118,20 @@ const updateCategory = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name,description } = req.body;
+  const image_url = req.file ? req.file.path : undefined;
+
+  const updated_data : {name?: string,description?: string,image_url?: string} ={name};
+  if(description){
+    updated_data.description = description;
+  }
+  if(image_url){
+    updated_data.image_url = image_url;
+  }
   try {
     const category = await Category.findByIdAndUpdate(
       id,
-      { name: name },
+      updated_data,
       { new: true }
     );
     return sendResponse(res, 200, {
